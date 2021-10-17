@@ -98,6 +98,7 @@ if __name__ == '__main__':
         print(bcolors.FAIL + "Given file not found" + bcolors.ENDC)
         exit
     f.close()
+    file_name = os.path.basename(file_location)
     headers = []
     rows = []
     team_name_1 = "-"
@@ -174,15 +175,30 @@ if __name__ == '__main__':
 
     # Let me create a list of chosen players
     players_selected=[]
+    playerAndOptimizer={}
     for players in Problem.variables():
         if(players.varValue>0):
             new_string = players.name.replace("_", " ")
             new_string = new_string.replace("Player chosen ","")
             players_selected.append(new_string)
+            playerAndOptimizer[new_string]=features_dictionary['optimizer'][new_string]
     print(players_selected)
-
+    #print(playerAndOptimizer)
+    sort_order = sorted(playerAndOptimizer.items(), key=lambda x: x[1] , reverse=True)
+    sort_order2=dict(sort_order)
+    j=0
+    for key in sort_order2:
+        if(j==0):
+            print("The optimised choice for captain is " , key)
+        if(j==1):
+            print("The optimised choice for vice-captain is ", key)
+        j+=1
     # need to create a new output file
-    output_file = "result_" + file_location
+    try:
+        os.mkdir('Outputs')
+    except FileExistsError:
+        print()
+    output_file = "Outputs/result_" + file_location
     with open(output_file,'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
