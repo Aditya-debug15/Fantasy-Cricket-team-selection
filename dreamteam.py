@@ -182,8 +182,11 @@ if __name__ == '__main__':
             new_string = new_string.replace("Player chosen ","")
             players_selected.append(new_string)
             playerAndOptimizer[new_string]=features_dictionary['optimizer'][new_string]
-    print(players_selected)
-    #print(playerAndOptimizer)
+    # print(players_selected)
+    count=1
+    print(bcolors.OKGREEN + "Selected players are :")
+    for playesr in players_selected:
+        print(bcolors.OKBLUE + count,"\t",playesr + bcolors.ENDC)
     sort_order = sorted(playerAndOptimizer.items(), key=lambda x: x[1] , reverse=True)
     sort_order2=dict(sort_order)
     j=0
@@ -198,7 +201,7 @@ if __name__ == '__main__':
         os.mkdir('Outputs')
     except FileExistsError:
         print()
-    output_file = "Outputs/result_" + file_location
+    output_file = "Outputs/result_" + file_name
     with open(output_file,'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
